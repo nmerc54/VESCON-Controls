@@ -4,7 +4,9 @@
 % This is a filler for the B field.
 
 clear all;
-disp('Starting!');
+debug = false;
+debug_print(debug, 'Starting!');
+
 %% Parameters:
 
 radius_earth = 6371; % km
@@ -21,18 +23,18 @@ max_alt = 10000;
 %mu = 3.986e5;
 mu = 1;
 
-disp('Settng up x, y, and z');
+debug_print(debug, 'Settng up x, y, and z');
 x = -10:1:10;
 y = -10:1:10;
 z = -10:1:10;
-disp('finished creating x, y, and z. Starting meshgrid')
+debug_print(debug, 'finished creating x, y, and z. Starting meshgrid')
 [X, Y, Z] = meshgrid(x, y, z);
-disp('Finished meshgrid. Starting for loop.')
+debug_print(debug, 'Finished meshgrid. Starting for loop.')
 for i = 1:numel(x)
     for j = 1:numel(y)
         for k = 1:numel(z)
             
-            fprintf('Im in iteration: i = %d, j = %d, k = %d \n', i, j, k);
+            debug_print(debug, 'Im in iteration: i = ');
             T(i,j,k) = -mu*(x(i)^2 + y(j)^2 + z(k)^2);
             
 %             u(i,j,k) = -mu*x(i);
@@ -44,9 +46,9 @@ for i = 1:numel(x)
     end
 end
 
-disp('finished for loop. about to start gradient');
+debug_print(debug, 'finished for loop. about to start gradient');
 [dx, dy, dz] = gradient(T);
-disp('Im finished with the gradient');
+debug_print(debug, 'Im finished with the gradient');
 quiver3(X, Y, Z, dx, dy, dz, 2);
 
 
