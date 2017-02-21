@@ -1,4 +1,4 @@
-%% Vector Field Plotting Script
+%% Vector Field Plotting Simulation
 %  Space Systems Research Laboaratory
 %  --------------------------------
 %  Nicholas Mercadante
@@ -9,16 +9,13 @@
 % Name          | Date      | Description
 % ------------------------------------------------------------------------
 % N.Mercadante   02-20-2017  This script is used to develop a vector field
-%                            plot using the built-in MATLAB quiver
-%                            function. This is a 3-D vector field.
+%                            plot using the built-in MATLAB 
 % ------------------------------------------------------------------------
 %
-% COPYRIGHT 2017 Space Systems Research Laboratory, all rights reserved.
-%
-% ************************************************************************
+% COPYRIGHT 2016 Nicholas Mercadante, Kate Clements, Cody Chlanda, 
+% Krzysztof Bzdyk, all rights reserved.
 
-clear;
-
+clear all;
 debug = true;
 debug_print(debug, 'Starting!');
 

@@ -1,21 +1,31 @@
-%% 3-D plot of orbits
-%  N. Mercadante
+%% 3-D Orbit Plotting Script
+%  Space Systems Research Laboaratory
+%  --------------------------------
+%  Nicholas Mercadante
+%
+%  Project: Rascal-1
+%
+%
+% Name          | Date      | Description
+% ------------------------------------------------------------------------
+% N.Mercadante   02-20-2017  This script is used to develop a 3D model of
+%                            various orbits around the earth.
+% ------------------------------------------------------------------------
+%
+% COPYRIGHT 2017 Space Systems Research Laboratory, all rights reserved.
+%
+% ************************************************************************
 
 plot_earth = false;
 
 %% Parameters
 
 radius_earth = 6371; % km
-
-%inclination = 90 * deg_to_rad;  % radians
-altitude = 375;    % km
-
+altitude = 375;      % km
 % true anomaly
-f = 0:0.001:2*pi;    
+f = 0:0.001:2*pi;    % rad
 
 inclination = [0 25 45 55 90];
-
-
 
 %% Plotting
 figure()
