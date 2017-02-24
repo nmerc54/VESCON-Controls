@@ -1,4 +1,4 @@
-%% 3-D Orbit Plotting Script
+%% Electric Field from True Anomaly
 %  Space Systems Research Laboaratory
 %  --------------------------------
 %  Nicholas Mercadante
@@ -8,28 +8,27 @@
 %
 % Name          | Date      | Description
 % ------------------------------------------------------------------------
-% N.Mercadante   02-20-2017  This script is used to develop a 3D model of
-%                            various orbits around the earth.
+% C. Franz       02-24-2017  takes lat, long as input
+% B. Fiedler                 elevation, azimuth in spherical coordinates == 
+%                            lat, long r stays constant for circular orbit
+%                            True anomaly adjusts both angles
 % ------------------------------------------------------------------------
 %
 % COPYRIGHT 2017 Space Systems Research Laboratory, all rights reserved.
 %
 % ************************************************************************
 
-
-
-
-%IGRF - takes lat, long as input
-%elevation, azimuth in spherical coordinates == lat, long
-%r stays constant for circular orbit
-%True anomaly adjusts both angles
-
+%% Parameters
 inclination = 55; %both in degrees for the moment
 true_anomaly = 25; 
 altitude = 375; %km
 DateString = '24-Feb-2017'; %Edit with date
 formatIn = 'dd-mmm-yyyy';
 time = datenum(DateString,formatIn);
+
+
+%% Calculations
+
 
 %Calls orbit coordinates and converts to spherical
 [x, y, z] = pos_circular_orbit3(altitude, inclination*pi/180, f);
