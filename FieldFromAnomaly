@@ -1,0 +1,18 @@
+%IGRF - takes lat, long as input
+%elevation, azimuth in spherical coordinates == lat, long
+%r stays constant for circular orbit
+%True anomaly adjusts both angles
+
+inclination = 55; %both in degrees for the moment
+true_anomaly = 25; 
+altitude = 375;
+
+[x, y, z] = circular_orbit3(altitude, inclination*pi/180);
+[az, el, r] = cart2sph(x,y,z) %az = azimuth, el = elevation, r = radius
+
+%stuff
+%stuff
+%stuff
+
+%call IGRF with az,el,r,t
+%output should be field vector at point in x,y,z components
