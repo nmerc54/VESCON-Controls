@@ -19,9 +19,6 @@
 % ************************************************************************
 
 clear; clc; clear all;
-set(0,'units','pixels');
-screen_size = get(0,'screensize');
-
 print_intro_to_term('Magnetorquer Control Simulation');
 
 %% Parameters
@@ -37,7 +34,7 @@ z_dimension = 0.681;    % m
 I_SC = inertiaTensor(mass, x_dimension, y_dimension, z_dimension);
 
 % CHANGE!!!!!!!!!!
-I_B = I_SC;
+I_SC
 
 % Orbit Period
 orbitPeriod = 60*90;    % sec
@@ -66,7 +63,7 @@ for i = 2:numel(t)
     H(:, i) = H(:, i-1) + T(:, i) .* dt;
     w(:, i) = I_B \ H(:, i);
     
-    E_dot(:, i) = (1/sin(0.001 + (Euler(2, i-1)))) .* euler_transform(Euler(:,i-1)) * w(:, i);
+    E_dot(:, i) = (1/sin(theta)) .* euler_transform(Euler(:,i-1)) * w(i,:);
     Euler(:, i) = Euler(:, i) + E_dot(:, i) .* dt;
 
 end
