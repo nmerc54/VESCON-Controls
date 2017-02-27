@@ -1,5 +1,5 @@
 %% ***********************************************************************
-%  Quaternion Rotations
+%  Calculate Inertia Tensor
 %  Space Systems Research Laboaratory
 %  --------------------------------
 %  Nicholas Mercadante
@@ -9,30 +9,23 @@
 %
 % Name          | Date      | Description
 % ------------------------------------------------------------------------
-% N.Mercadante   02-24-2017  This script is used to test rotational
-%                            kinematics with quaternions.
+% N.Mercadante  11-10-2016   Calculates the inertia tensor in kg-m^2. 
+%
+% N.Mercadante  02-26-2017   Takes arguments of x, y, z in meters, and mass
+%                            in kg. Taken from VESCON project.
+%
 % ------------------------------------------------------------------------
 %
 % COPYRIGHT 2017 Space Systems Research Laboratory, all rights reserved.
 %
 % ************************************************************************
 
-clear all;
 
-%% Parameters
-% built-in matlab quaternions;
+function I = inertiaTensor(mass, x, y, z)
+    
+    I = [ (mass/12)*(y^2 + z^2)    0    0 ; ...
+          0    (mass/12)*(z^2 + x^2)    0 ; ...
+          0    0    (mass/12)*(x^2 + y^2) ];        % kg-m^2
 
-theta = 1*pi/4;
-e1 = 1;
-e2 = 2;
-e3 = 3;
-
-q1 = e1*sin(theta/2);
-q2 = e2*sin(theta/2);
-q3 = e3*sin(theta/2);
-q4 = cos(theta/2);
-
-q = [q1, q2, q3, q4];
-r = [1 1 1];
-
-n = quatrotate(q, r);
+end
+    
