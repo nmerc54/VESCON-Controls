@@ -1,0 +1,30 @@
+%% *********************************************************************** 
+%  Pulse (Dirac-Delta Impulse) Function
+%  Space Systems Research Laboaratory
+%  --------------------------------
+%  Nicholas Mercadante
+%
+%  Project: Rascal-1
+%
+%
+% Name          | Date      | Description
+% ------------------------------------------------------------------------
+% N.Mercadante   02-26-2017  Creates a pulse for a given time interval. 
+% ------------------------------------------------------------------------
+%
+% COPYRIGHT 2017 Space Systems Research Laboratory, all rights reserved.
+%
+% ************************************************************************
+
+function inputpulses = pulse(time_step, start_time, duration, amplitude, input_pulses)
+
+    % Time history, start time, and duration should be in seconds.
+    % Amplitude is in a generic unit.
+
+    start_idx = start_time/time_step;
+    end_idx = (start_time + duration)/time_step;
+    
+    pulses(start_idx:end_idx) = amplitude;
+    
+
+end
