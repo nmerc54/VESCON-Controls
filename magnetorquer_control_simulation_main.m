@@ -87,7 +87,7 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
     subplot(2, 1, 1)
         plot(t, w(1,:).*r2d, t, w(2,:).*r2d, t, w(3,:).*r2d), grid on,
         legend({'\omega_{x}', '\omega_{y}', '\omega_{z}'}),
-        title('Body-Rates');
+        title('Body-Rates'), xlabel('Seconds'), ylabel('degrees/sec');
     subplot(2,1,2)
         plot(t, T(1,:), t, T(2,:), t, T(3,:)), grid on,
         legend({'x', 'y', 'z'}),
@@ -97,11 +97,11 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
     subplot(2, 1, 1)    
         plot(t, Euler(1,:).*r2d, t, Euler(2,:).*r2d, t, Euler(3,:).*r2d), grid on,
         legend({'\Psi', '\Theta', '\Phi'}),
-        title('Euler Angels');    
+        title('Euler Angels'), xlabel('Seconds'), ylabel('degrees');    
     subplot(2,1,2)
         plot(t, E_dot(1,:).*r2d, t, E_dot(2,:).*r2d, t, E_dot(3,:).*r2d), grid on,
         legend({'\Psi - dot', '\Theta - dot', '\Phi - dot'}),
-        title('Euler Rates');
+        title('Euler Rates'), xlabel('Seconds'), ylabel('degrees/sec');
 
 
 

@@ -1,5 +1,5 @@
 %% *********************************************************************** 
-%  Euler Cosine Transform
+%  Quaternion Skew Matrix
 %  Space Systems Research Laboaratory
 %  --------------------------------
 %  Nicholas Mercadante
@@ -10,21 +10,21 @@
 % Name          | Date      | Description
 % ------------------------------------------------------------------------
 % N.Mercadante   02-26-2017  This script will generate a matrix for the
-%                            Euler kinematic angles.
+%                            quaternion skew from the body rates.
 % ------------------------------------------------------------------------
 %
 % COPYRIGHT 2017 Space Systems Research Laboratory, all rights reserved.
 %
 % ************************************************************************
 
-function C = euler_transform(Euler_angles)
-
-    psi     = Euler_angles(1);
-    theta   = Euler_angles(2);
-    %phi     = Euler_angles(3);
+function S = quatSkew(w)
     
-    C = [ sin(psi)            , cos(psi)            , 0          ; ...
-          cos(psi)*sin(theta) , -sin(psi)*sin(theta), 0          ; ...
-          -sin(psi)*cos(theta), -cos(psi)*cos(theta) , sin(theta)];
+    w1 = w(1); w2 = w(2); w3 = w(3);
+
+    S = [ 0  , w3, -w2, w1 ; ...
+         -w3, 0  ,  w1, w2 ; ...
+         w2 , -w1, 0  , w3 ; ...
+         -w1, -w2, -w3, 0  ];
+    
 
 end
