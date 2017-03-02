@@ -85,7 +85,7 @@ for i = 2:numel(t)
     qdot(:, i) = 0.5 .* S * q(:, i-1);
     q(:, i) = q(:, i-1) + qdot(:, i)*dt;
     
-    Euler(:, i) = quat2Euler(q(:, i));
+    
     
     %E_dot(:, i) = (1/sin(0.001 + (Euler(2, i-1)))) .* euler_transform(Euler(:,i-1)) * w(:, i);
     %Euler(:, i) = Euler(:, i-1) + E_dot(:, i) .* dt;
@@ -105,20 +105,18 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
         legend({'x', 'y', 'z'}),
         title('Torques');
     
-% figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
-%     subplot(2, 1, 1)    
-%         plot(t, Euler(1,:).*r2d, t, Euler(2,:).*r2d, t, Euler(3,:).*r2d), grid on,
-%         legend({'\Psi', '\Theta', '\Phi'}),
-%         title('Euler Angels'), xlabel('Seconds'), ylabel('degrees');    
-%     subplot(2,1,2)
-%         plot(t, E_dot(1,:).*r2d, t, E_dot(2,:).*r2d, t, E_dot(3,:).*r2d), grid on,
-%         legend({'\Psi - dot', '\Theta - dot', '\Phi - dot'}),
-%         title('Euler Rates'), xlabel('Seconds'), ylabel('degrees/sec');
-
 figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
-    plot(t, Euler(1,:).*r2d, t, Euler(2,:).*r2d, t, Euler(3,:).*r2d), grid on,
-    legend({'\Psi', '\Theta', '\Phi'}),
-    title('Euler Angels'), xlabel('Seconds'), ylabel('degrees');    
+    subplot(2, 1, 1)    
+        plot(t, Euler(1,:).*r2d, t, Euler(2,:).*r2d, t, Euler(3,:).*r2d), grid on,
+        legend({'\Psi', '\Theta', '\Phi'}),
+        title('Euler Angels'), xlabel('Seconds'), ylabel('degrees');    
+    subplot(2,1,2)
+        plot(t, E_dot(1,:).*r2d, t, E_dot(2,:).*r2d, t, E_dot(3,:).*r2d), grid on,
+        legend({'\Psi - dot', '\Theta - dot', '\Phi - dot'}),
+        title('Euler Rates'), xlabel('Seconds'), ylabel('degrees/sec');
+
+
+
 
 
 
