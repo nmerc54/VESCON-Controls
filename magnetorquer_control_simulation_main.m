@@ -47,7 +47,7 @@ z_dimension = 0.681;    % m
 I_B = inertiaTensor(mass, x_dimension, y_dimension, z_dimension);
 
 % Orbit Period
-orbitPeriod = 60*1;    % sec
+orbitPeriod = 60*10;    % sec
 dt = 0.001;             % sec
 t = 0 : dt : orbitPeriod;
 
@@ -88,6 +88,7 @@ mux = 0.1;   mu_B(1,:) = pulse(dt, 15, 1, mux, mu_B(1,:));
 muy = 0*0.1;   mu_B(2,:) = pulse(dt, 25, 1, muy, mu_B(2,:));
 muz = 0*0.1;   mu_B(3,:) = pulse(dt, 30, 1, muz, mu_B(3,:));
 
+h = waitbar(0,'Initializing waitbar...');
 %% Simulation
 for i = 2:numel(t)
     % Shift the B vector from Inertial to Body reference
@@ -109,7 +110,12 @@ for i = 2:numel(t)
         
     Euler(:, i) = quat2Euler(q_BtoI(:, i));
     
-
+    % Display to screen: Adds 0.8% to the sim time. That's ~5 seconds on a
+    %                    10 minute simulation.
+    if mod(i, 1000) == 0
+        waitbar( i/numel(t) , h,  'Percent Complete:'); 
+    end
+    
 end
 
 %% Display Results
