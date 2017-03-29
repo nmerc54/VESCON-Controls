@@ -167,17 +167,9 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
 
 figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
     subplot(3, 1, 1)
-        plot(t, w_B(1, :)), title('Body - X rotation'), grid on,
-        xlabel('Orbits'), ylabel('Degree/s'),
-        axis([0 orbitPeriod -180 180]);
-    subplot(3, 1, 2)
-        plot(t, w_B(2, :)), title('Body - Y rotation'), grid on,
-        xlabel('Orbits'), ylabel('Degree/s'),
-        axis([0 orbitPeriod -180 180]);
-    subplot(3, 1, 3)
-        plot(t, w_B(3, :)), title('Body - Z rotation'), grid on,
-        xlabel('Orbits'), ylabel('Degree/s'),
-        axis([0 orbitPeriod -180 180]);
+        plot(t, w_B(1, :)), title(sprintf('w-%d', i)),
+        xlabel('Orbits')ylabel('Rotation rate (degrees/s)')
+    
     
     
     
