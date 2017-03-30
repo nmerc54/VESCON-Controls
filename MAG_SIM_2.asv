@@ -118,7 +118,6 @@ end
 
 %% Display Results
 time_factor = 60;
-time_label = 'Minutes';
 
 %Body Rates vs. Torque
 % figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
@@ -136,7 +135,7 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
     subplot(2,1,1)
         plot(t./time_factor, Euler(1,:).*r2d, t./time_factor, Euler(2,:).*r2d, t./time_factor, Euler(3,:).*r2d), grid on,
         legend({'\Phi (Roll)', '\Theta (Pitch)', '\Psi (Yaw)'}),
-        title('Euler Angels'), xlabel(time_label), ylabel('degrees');    
+        title('Euler Angels'), xlabel('Minutes'), ylabel('degrees');    
     subplot(2,1,2)
         plot(t./time_factor, T_B(1,:), t./time_factor, T_B(2,:), t./time_factor, T_B(3,:)), grid on,
         legend({'x', 'y', 'z'}), %axis([0 orbitPeriod -0.01 0.01]),
@@ -147,7 +146,7 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
     subplot(2,1,1)
         plot(t./time_factor, euler_axis(1,:), t./time_factor, euler_axis(2,:), t./time_factor, euler_axis(3,:)), grid on,
         legend({'e_x', 'e_y', 'e_z'}),
-        title('Euler Axis'), xlabel(time_label);    
+        title('Euler Axis'), xlabel('Minutes');    
     subplot(2,1,2)
         plot(t./time_factor, axis_angle.*r2d), grid on,
         xlabel('Seconds'), ylabel('Degrees'), %axis([0 orbitPeriod -180 180]),
@@ -156,7 +155,7 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
 figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
     plot(t./time_factor, q_BtoI(1,:), t./time_factor, q_BtoI(2,:), t./time_factor, q_BtoI(3,:), t./time_factor, q_BtoI(4, :)), grid on,
     legend({'q_1', 'q_2', 'q_3', 'q_4'}),
-    title('Quaternions'), xlabel(time_label);    
+    title('Quaternions'), xlabel('Minutes');    
 
 
 % Body Rates

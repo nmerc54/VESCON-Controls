@@ -32,8 +32,8 @@ function torque_output = selectTorque(parameters)
     % ---------------------------------------------------------------------
     
 %    *** GAINS ***                        
-     kA = 0.9995;
-     kR = 1-kA;
+     kA = 0;
+     kR = 1;
 %    *************
      
      error_attitude = 100;
