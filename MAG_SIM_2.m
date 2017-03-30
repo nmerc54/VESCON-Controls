@@ -1,5 +1,5 @@
 %% *********************************************************************** 
-%  Magnetorquer Control Model
+%  Magnetorquer Controls - 2 TEMP
 %  Space Systems Research Laboaratory
 %  --------------------------------
 %  Nicholas Mercadante
@@ -9,17 +9,10 @@
 %
 % Name          | Date      | Description
 % ------------------------------------------------------------------------
-% N.Mercadante   02-26-2017  This script will develop the control
-%                            simulation for the Rascal-1 magnetorquer
-%                            payload.
-%
-%                            Note that there are three refrence frames used
-%                            in this simulation. There is the intertial
-%                            reference frame, which is an earth-fixed
-%                            frame. This frame will be used for the
-%                            environmental torques. There is the space
-%                            reference frame, wich is fixed on the orbit
-%                            path, and then the body-fixed frame.
+% N.Mercadante   03-29-2017  TEMP -- intended as a sandbox-type script.
+%                            right now I have the logic 'trying' to calm
+%                            the system down. Need to implement logic to
+%                            damp, not just slew.
 % ------------------------------------------------------------------------
 %
 % COPYRIGHT 2017 Space Systems Research Laboratory, all rights reserved.
@@ -45,6 +38,8 @@ z_dimension = 0.681;    % m
 
 % Inertia Tensor -- on BODY Axis system
 I_B = inertiaTensor(mass, x_dimension, y_dimension, z_dimension);
+t_mag = 0.01; % N-m
+
 
 % Orbit Period
 orbitPeriod = 60*1;    % sec
@@ -71,37 +66,26 @@ euler_axis = zeros(1, numel(t));
 w_B(:, 1) = [0.01; 0.01; 0.01];    % rad/s
 H_B(:, 1) = I_B * w_B(:,1); 
 
-q_BtoI(:, 1) = dc2q( [ 0 0 -1 ;    % In initial position.
-                      -1 0  0 ;
-                       0 1  0 ]); 
+q_BtoI(:, 1) = normalize([.25; -.1; -0.12; .69]); % I to Body
 
-%% Environmental Effects:
-
-% Earth's magnetic field (IGRF Model) - SPACE FRAME
-c = 0.0;
-B_I(1, :) = 0.05 * c.*t; %sin(c.*t);
-B_I(2, :) = 0.05 * c.*t; %cos(c.*t);
-B_I(3, :) = 0.05 * c.*t; %sin(c.*t).^2;
-
-% Initialize the body-fixed B to the space-fized B.
-B_B(:, 1) = B_I(:, 1);
-
-% Control torque - BODY FRAME
-a = 0;
-mu_B = zeros(3, numel(t));
-mux = a*0.1;   mu_B(1,:) = pulse(dt, 15, 1, mux, mu_B(1,:));
-muy = a*0.1;   mu_B(2,:) = pulse(dt, 25, 1, muy, mu_B(2,:));
-muz = a*0.1;   mu_B(3,:) = pulse(dt, 30, 1, muz, mu_B(3,:));
 
 h = waitbar(0,'Initializing waitbar...');
 %% Simulation
-% matlabpool open 4
+
+% --------------------------------------------------
+   q_D = 0.5.*[1; -1; -1; -1];       % Q DESIRED
+% --------------------------------------------------
+
 for i = 2:numel(t)
-    % Shift the B vector from Inertial to Body reference
-    B_B(:, i) = qRotate(q_BtoI(:, i-1), B_I(:, i));
+   
+    % Parameters: ---------------------------------------------------------
+    parameters = Parameters( ...
+        q_BtoI(:, i-1), qdot_BtoI(:, i-1), q_D, H_B(:, i-1), I_B, t_mag, dt ...
+        );
+    % ---------------------------------------------------------------------
     
     % Calculate Control Torque in body-frame
-    T_B(:, i) = magneticTorque(B_B(:, i), mu_B(:, i));
+    T_B(:, i) = selectTorque(parameters);
     
     % Calculate the body rate changes
     H_B(:, i) = H_B(:, i-1) + T_B(:, i) .* dt;
@@ -115,6 +99,8 @@ for i = 2:numel(t)
     q_BtoI(:, i) = normalize(  q_BtoI(:, i-1) + qdot_BtoI(:, i)*dt  );
         
     Euler(:, i) = quat2Euler(q_BtoI(:, i));
+    
+    
     
     % Display to screen: Adds 0.8% to the sim time. That's ~5 seconds on a
     %                    10 minute simulation.

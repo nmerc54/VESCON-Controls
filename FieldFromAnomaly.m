@@ -31,7 +31,7 @@ time = datenum(DateString,formatIn);
 
 
 %Calls orbit coordinates and converts to spherical
-[x, y, z] = pos_circular_orbit3(altitude, inclination*pi/180, f);
+[x, y, z] = pos_circular_orbit3(altitude, inclination*pi/180, true_anomaly*pi/180);
 [az, el, r] = cart2sph(x,y,z) %az = azimuth, el = elevation, r = radius 
 
 %Calculates x,y,z components of field vector 
