@@ -1,4 +1,5 @@
-%% Display Results
+%% Plotting.m
+%  Display Results
 time_factor = 60;
 time_label = 'Minutes';
 

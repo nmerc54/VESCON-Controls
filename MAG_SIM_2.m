@@ -54,13 +54,13 @@ T_B = zeros(3, numel(t));     % Torque (body-fixed)
 B_I = zeros(3, numel(t));    
 B_B = zeros(3, numel(t));
 
-Euler     = zeros(3, numel(t)); % Euler-Angles (inertial-fixed)
+%Euler     = zeros(3, numel(t)); % Euler-Angles (inertial-fixed)
 q_BtoI    = zeros(4, numel(t));
 qdot_BtoI = zeros(4, numel(t));
 
 % For debugging - euler axis and rotations
-% axis_angle = zeros(1, numel(t));
-% euler_axis = zeros(1, numel(t));
+axis_angle = zeros(1, numel(t));
+euler_axis = zeros(1, numel(t));
 
 % Initial Values:
 w_B(:, 1) = [0.01; 0.01; 0.01];    % rad/s
@@ -99,7 +99,7 @@ for i = 2:numel(t)
     % Numerically Integrate and Normalize
     q_BtoI(:, i) = normalize(  q_BtoI(:, i-1) + qdot_BtoI(:, i)*dt  );
         
-    Euler(:, i) = quat2Euler(q_BtoI(:, i));
+    %Euler(:, i) = quat2Euler(q_BtoI(:, i));
     
     
     
@@ -120,4 +120,7 @@ end
 %% Save workspace
 saveWorkspace();
 
+%% Plot
+% comment out if running on hopper or apex
+plotting
 
