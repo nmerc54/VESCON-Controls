@@ -13,8 +13,7 @@
 %                                       [ Ke_out ]
 %                                       [    0   ]
 %                                       [    0   ]
-%                            This is to conform to the matlab function
-%                            standard.
+%               
 % ------------------------------------------------------------------------
 %
 % COPYRIGHT 2017 Space Systems Research Laboratory, all rights reserved.
@@ -37,7 +36,7 @@ function [torque_output, Ke_out] = selectTorque(parameters, Ke_in)
     % ---------------------------------------------------------------------
     
 %    *** GAINS ***  should add up to 1 for sim to work with Ke                      
-     kA = 0.5;
+     kA = 0.9995;
      kR = 1-kA;
 %    *************
      
@@ -76,10 +75,9 @@ function [torque_output, Ke_out] = selectTorque(parameters, Ke_in)
         
     end
     
-    % Damping constant - reduce the torque magnitude
     Ke_out = [(kA*error_attitude + kR*error_rate)/2 ; 0; 0];
     
     torque_decision = torque_options(:, counter);
-    torque_output = torque_decision .* parameters.T .* Ke_out(1);
+    torque_output = torque_decision.*T;
 
 end
