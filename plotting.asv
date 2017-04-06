@@ -52,13 +52,13 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
 
 figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
     subplot(3, 1, 1)
-        plot(t./time_factor, Ke), grid on, %axis([0 orbitPeriod/time_factor 0 1]),
+        plot(t./time_factor, 1,:)), grid on, axis([0 orbitPeriod/time_factor 0 1]),
         title('Ke'), xlabel(time_label);          
     subplot(3, 1, 2)
-        plot(t./time_factor, eA), grid on, %axis([0 orbitPeriod/time_factor 0 1]),
+        plot(t./time_factor, out(2,:)), grid on, axis([0 orbitPeriod/time_factor 0 1]),
         title('eA'), xlabel(time_label);
     subplot(3, 1, 3)
-        plot(t./time_factor, eR), grid on, %axis([0 orbitPeriod/time_factor 0 1]),
+        plot(t./time_factor, out(3,:)), grid on, axis([0 orbitPeriod/time_factor 0 1]),
         title('eR'), xlabel(time_label);
         
 % Body Rates
