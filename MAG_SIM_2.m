@@ -130,6 +130,8 @@ for i = 2:numel(t)
     
 end
 toc
+
+clear('h');
 %% Save workspace
     format shortg;
     c = clock;
