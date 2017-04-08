@@ -27,6 +27,12 @@ print_intro_to_term('Magnetorquer Control Simulation');
 
 d2r = pi/180;
 r2d = 180/pi;
+
+%% NOTES:
+% Run with 0.01 N-m for best results. Use eA >= 0.05 and eR >= 0.015.
+%
+% For more true numbers with magnetorqers, use small torque and play with
+% the numbers.
 %% Parameters
 
 mass = 10;              % kg
@@ -38,7 +44,7 @@ z_dimension = 0.681;    % m
 
 % Inertia Tensor -- on BODY Axis system
 I_B = inertiaTensor(mass, x_dimension, y_dimension, z_dimension);
-t_mag = 0.01; % N-m
+t_mag = 1e-4; % N-m
 
 
 % Orbit Period
@@ -66,7 +72,7 @@ euler_axis = zeros(1, numel(t));
 w_B(:, 1) = [0.01; 0.01; 0.01];    % rad/s
 H_B(:, 1) = I_B * w_B(:,1); 
 
-q_BtoI(:, 1) = normalize([0.25, -5.6, 1.23, -0.99]); % I to Body
+q_BtoI(:, 1) = normalize(0.5.*[0.95; -0.95; -1.05; -1.05]); % I to Body
 
 
 h = waitbar(0,'Initializing waitbar...');

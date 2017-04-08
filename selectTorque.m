@@ -32,7 +32,7 @@ function [torque_output] = selectTorque(parameters)
     eA      = parameters.eA;
     eR      = parameters.eR;
     Ke      = parameters.Ke;
-    
+   
     % All possible torque combinations. -----------------------------------
     torque_options = [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1;...
                       0,0,0,1,1,1,-1,-1,-1,0,0,0,1,1,1,-1,-1,-1,0,0,0,1,1,1,-1,-1,-1;...
@@ -42,10 +42,13 @@ function [torque_output] = selectTorque(parameters)
      counter = 1;
      
 %    *** GAINS ***  should add up to 1 for sim to work with Ke                      
-     if (eA >= 0.01)  % If the attiude error is high, correct
-        kA = 0.995;
-     else                       % If attitude in good range, correct rate
+     if (eA >= 0.001)  % If the attiude error is high, correct
+        kA = 0.997;     % 0.995
+     elseif (eR >= 0.015)       % If attitude in good range, correct rate
         kA = 0;
+     else
+         torque_output = [0;0;0]; 
+         return
      end
      
      kR = 1-kA;

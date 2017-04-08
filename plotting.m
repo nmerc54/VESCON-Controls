@@ -106,5 +106,38 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
 %         xlabel('Orbits'), ylabel('Newton-Meters'),
 %         %axis([0 orbitPeriod -180 180]);  
     
+figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
+    subplot(3,1,1)
+        plot(t./time_factor, w_B), grid on,
+        xlabel(time_label), ylabel('rad/s');
+    subplot(3,1,2)
+        plot(t./time_factor, eR), grid on,
+        xlabel(time_label), ylabel('Rate Error');
+    subplot(3,1,3)
+        plot(t./time_factor, T_B), grid on,
+        xlabel(time_label), ylabel('N-m'),
+        legend({'\tau_x', '\tau_y', '\tau_z'});
+
+figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
+    subplot(3,1,1)
+        plot(t./time_factor, q_BtoI), grid on,
+        xlabel(time_label), ylabel('Quaternions');
+    subplot(3,1,2)
+        plot(t./time_factor, eA), grid on,
+        xlabel(time_label), ylabel('Attitude Error'),
+        legend({'q_1', 'q_2', 'q_3', 'q_4'});
+    subplot(3,1,3)
+        plot(t./time_factor, T_B), grid on,
+        xlabel(time_label), ylabel('N-m'),
+        legend({'\tau_x', '\tau_y', '\tau_z'});
+
+
+
+
+
+
+
+
+
 
 
