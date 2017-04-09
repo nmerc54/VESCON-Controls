@@ -26,15 +26,15 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
 %         title('Torques');
 
 % Quaternion Components        
-figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
-    subplot(2,1,1)
-        plot(t./time_factor, euler_axis(1,:), t./time_factor, euler_axis(2,:), t./time_factor, euler_axis(3,:)), grid on,
-        legend({'e_x', 'e_y', 'e_z'}),
-        title('Euler Axis'), xlabel(time_label);    
-    subplot(2,1,2)
-        plot(t./time_factor, axis_angle.*r2d), grid on,
-        xlabel(time_factor), ylabel('Degrees'), %axis([0 orbitPeriod -180 180]),
-        title('Euler Axis Rotation');
+% figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
+%     subplot(2,1,1)
+%         plot(t./time_factor, euler_axis(1,:), t./time_factor, euler_axis(2,:), t./time_factor, euler_axis(3,:)), grid on,
+%         legend({'e_x', 'e_y', 'e_z'}),
+%         title('Euler Axis'), xlabel(time_label);    
+%     subplot(2,1,2)
+%         plot(t./time_factor, axis_angle.*r2d), grid on,
+%         xlabel(time_factor), ylabel('Degrees'), %axis([0 orbitPeriod -180 180]),
+%         title('Euler Axis Rotation');
 
 figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
     subplot(3, 1, 1)
@@ -125,7 +125,6 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
     subplot(3,1,2)
         plot(t./time_factor, eA), grid on,
         xlabel(time_label), ylabel('Attitude Error'),
-        legend({'q_1', 'q_2', 'q_3', 'q_4'});
     subplot(3,1,3)
         plot(t./time_factor, T_B), grid on,
         xlabel(time_label), ylabel('N-m'),
