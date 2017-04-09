@@ -11,7 +11,7 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
         title('Body-Rates'), xlabel('Seconds'), ylabel('degrees/sec');
     subplot(2,1,2)
         plot(t, T_B(1,:), t, T_B(2,:), t, T_B(3,:)), grid on,
-        legend({'x', 'y', 'z'}), %axis([0 orbitPeriod -0.01 0.01]),
+        legend({'x', 'y', 'z'}), axis([0 orbitPeriod -0.002 0.002]),
         title('Torques');
     
 %Euler Angles vs. Torque
@@ -47,19 +47,8 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
         title('Quaternion Rates'), xlabel(time_label); 
     subplot(3, 1, 3)
         plot(t./time_factor, T_B(1,:), t./time_factor, T_B(2,:), t./time_factor, T_B(3,:)), grid on,
-        legend({'x', 'y', 'z'}), %axis([0 orbitPeriod -0.01 0.01]),
+        legend({'x', 'y', 'z'}), axis([0 orbitPeriod./time_factor -0.002 0.002]),
         xlabel(time_label), title('Torques');
-
-figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
-    subplot(3, 1, 1)
-        plot(t./time_factor, Ke), grid on, %axis([0 orbitPeriod/time_factor 0 1]),
-        title('Ke'), xlabel(time_label);          
-    subplot(3, 1, 2)
-        plot(t./time_factor, eA), grid on, %axis([0 orbitPeriod/time_factor 0 1]),
-        title('eA'), xlabel(time_label);
-    subplot(3, 1, 3)
-        plot(t./time_factor, eR), grid on, %axis([0 orbitPeriod/time_factor 0 1]),
-        title('eR'), xlabel(time_label);
         
 % Body Rates
 % figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
@@ -115,7 +104,7 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
         xlabel(time_label), ylabel('Rate Error');
     subplot(3,1,3)
         plot(t./time_factor, T_B), grid on,
-        xlabel(time_label), ylabel('N-m'),
+        xlabel(time_label), ylabel('N-m'), axis([0 orbitPeriod./time_factor -0.002 0.002]),
         legend({'\tau_x', '\tau_y', '\tau_z'});
 
 figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
@@ -127,7 +116,7 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
         xlabel(time_label), ylabel('Attitude Error'),
     subplot(3,1,3)
         plot(t./time_factor, T_B), grid on,
-        xlabel(time_label), ylabel('N-m'),
+        xlabel(time_label), ylabel('N-m'), axis([0 orbitPeriod./time_factor -0.002 0.002]),
         legend({'\tau_x', '\tau_y', '\tau_z'});
 
 

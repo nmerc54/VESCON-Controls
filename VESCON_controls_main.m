@@ -106,7 +106,7 @@ for i = 2:numel(t)
    
     if mod(i, pulse) == 0  % System not in torque. Free to calculate torque to resolve motion
 
-        torque_choice(:, i) = selectTorque(parameters);
+        torque_choice(:, i) = selectThrusterTorqe(parameters);
         T_B(:, i) = thruster_torque_magnitude.*torque_choice(:, i);
     
     
@@ -137,7 +137,7 @@ for i = 2:numel(t)
 
     % **** CHANGE SELECT_TORQUE to output thruster_choice
     prop_mass_used(i) = iteratePropMass(prop_mass_used(i-1), mdot, dt, torque_choice(:, i));
-    I_B(:, :, i) = inertiaTensor(mass - prop_mass_used(i), ...
+    I_B(:, :, i) = inertiaTensor(mass - 0*prop_mass_used(i), ...
                                 x_dimension, y_dimension, z_dimension);
            
 
