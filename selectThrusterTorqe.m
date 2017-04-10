@@ -42,12 +42,12 @@ function [torque_decision] = selectThrusterTorqe(parameters)
      counter = 1;
      
 %    *** GAINS ***  should add up to 1 for sim to work with Ke                      
-     if (eA >= 0.001)  % If the attiude error is high, correct
-        kA = 0.997;     % 0.995
+     if (eA >= 0.010)  % If the attiude error is high, correct
+        kA = 1;     % 0.995
      elseif (eR >= 0.015)       % If attitude in good range, correct rate
         kA = 0;
      else
-         torque_output = [0;0;0]; 
+         torque_decision = [0;0;0]; 
          return
      end
      

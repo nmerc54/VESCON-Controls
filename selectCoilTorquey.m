@@ -21,7 +21,7 @@
 %
 % ************************************************************************
 
-function [torque_output] = selectTorque(parameters)
+function [torque_decision] = selectCoilTorquey(parameters)
     
     q       = parameters.q;      
     H       = parameters.H;       
@@ -47,7 +47,7 @@ function [torque_output] = selectTorque(parameters)
      elseif (eR >= 0.015)       % If attitude in good range, correct rate
         kA = 0;
      else
-         torque_output = [0;0;0]; 
+         torque_decision = [0;0;0]; 
          return
      end
      
@@ -84,17 +84,6 @@ function [torque_output] = selectTorque(parameters)
        end 
     end
     
-    % Damping constant - reduce the torque magnitude
-    %%% CODE HERE
-    
-    %out = [1 ; error_attitude; error_rate];
-    
-    % Only allow Ke to decrease.
-%     if (out(1) > in(1))
-%         out(1) = in(1);
-%     end
-    
     torque_decision = torque_options(:, counter);
-    torque_output = torque_decision .* parameters.T;
 
 end

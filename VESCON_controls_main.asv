@@ -56,8 +56,8 @@ mdot = 0.008;           % kg/s
 prop_mass_used = zeros(1, numel(t));
 
 % Torque Parameters
-thruster_torque_magnitude = 1e-4; % N-m
-torque_time               = 0.8;  % s
+thruster_torque_magnitude = 10e-4; % N-m
+torque_time               = 1.5;  % s
 magcoils_torque_magnetude = 1e-4; % N-m
 coils_freq                = 100;  % Hz
 
@@ -103,17 +103,17 @@ tic
 for i = 2:numel(t)
     
     % Use magnetorquers -- should implement Hz in here somehow...
-    %if eA <= attitude_tolerance 
-    if 1 == 1
+    if eA >= attitude_tolerance 
+    disp(
         % PARAMETERS: -----------------------------------------------------
         parameters = Parameters( ...
          q_BtoI(:, i-1), qdot_BtoI(:, i-1), q_D, H_B(:, i-1), I_B(:,:,i-1), ...
-         magcoils_torque_magnetude, dt,  1  , eA(i-1), eR(i-1)              ...
+         magcoils_torque_magnitude, dt,  1  , eA(i-1), eR(i-1)              ...
          );   
      
         % TORQUE SELECTION ------------------------------------------------
-        torque_choice(:, i) = selectCoilTorquey(parameters);
-        T_B(:, i) = magcoils_torque_magnetude.*torque_choice(:, i);
+        torque_choice(:, i) = selectThrusterTorqe(parameters);
+        T_B(:, i) = thruster_torque_magnitude.*torque_choice(:, i);
         
     % Use Thrusters
     else
@@ -128,7 +128,7 @@ for i = 2:numel(t)
         % TORQUE SELECTION ------------------------------------------------
         if mod(i, pulse) == 0  % System not in torque. Free to calculate torque to resolve motion
 
-            torque_choice(:, i) = selectThrusterTorqe(parameters);
+            torque_choice(:, i) = selectCoilTorquey(parameters);
             T_B(:, i) = thruster_torque_magnitude.*torque_choice(:, i);
 
         else % System in a torque pulse. Torque is same as previous iteration
