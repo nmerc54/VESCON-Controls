@@ -108,16 +108,12 @@ for i = 2:numel(t)
     % System not in torque. Free to calculate torque to resolve motion
     if mod(i, pulse) == 0  
         
-        % If the error is acceptible
-        if (eA < 0.10) & (eR < 0.10)
-            torque_choice(:, i) = [0; 0; 0]; 
+        if eA < 0.10 && eR < 0.10
+            torque_choice(:, i) = [0; 0; 0];
             
-        % If the error is not acceptible
         else
-            torque_choice(:, i) = selectThrusterTorqe(parameters);   
-        end
-        
-        T_B(:, i) = thruster_torque_magnitude.*torque_choice(:, i);
+            torque_choice(:, i) = selectThrusterTorqe(parameters);
+            T_B(:, i) = thruster_torque_magnitude.*torque_choice(:, i);
     
     
     % System in a torque pulse. Torque is same as previous iteration

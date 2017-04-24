@@ -61,10 +61,12 @@ function [torque_decision] = selectThrusterTorqe(parameters)
     % NOTE for parfor:
     %   There will be a ton of overhead here. You need to figure out how to
     %   parallelize the larger for loop. Otherwise it gets crazy.
+    
+    DT = 0.5;   % sec
     for i = 1:27
        % Calculate new quaternion from torque choice
        torque = torque_options(:, i).*T.*Ke;
-       H_est = H + torque.*dt;
+       H_est = H + torque.*DT;
        w_est = I\H_est;      
        S = quatSkew(w_est);
        q_dot_est = 0.5 .* S * q;            % I am assuming that q_dot_des = 0     
