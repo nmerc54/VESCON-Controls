@@ -120,18 +120,18 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
         xlabel(time_label), ylabel('N-m'), axis([0 orbitPeriod./time_factor -0.002 0.002]),
         legend({'\tau_x', '\tau_y', '\tau_z'});
 
-figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
-    subplot(3,1,1)
-        plot(t./time_factor, q_D*ones(1, numel(t))), grid on,
-        legend({'q_D1', 'q_D2', 'q_D3', 'q_D4'}), axis([0 orbitPeriod./time_factor -1 1]),
-        xlabel(time_label), ylabel('Quaternions');
-    subplot(3,1,2)
-        plot(t./time_factor, eA), grid on,
-        xlabel(time_label), ylabel('Attitude Error'),
-    subplot(3,1,3)
-        plot(t./time_factor, T_B), grid on,
-        xlabel(time_label), ylabel('N-m'), axis([0 orbitPeriod./time_factor -0.002 0.002]),
-        legend({'\tau_x', '\tau_y', '\tau_z'});
+% figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
+%     subplot(3,1,1)
+%         plot(t./time_factor, q_D*ones(1, numel(t))), grid on,
+%         legend({'q_D1', 'q_D2', 'q_D3', 'q_D4'}), axis([0 orbitPeriod./time_factor -1 1]),
+%         xlabel(time_label), ylabel('Quaternion Desired');
+%     subplot(3,1,2)
+%         plot(t./time_factor, eA), grid on,
+%         xlabel(time_label), ylabel('Attitude Error'),
+%     subplot(3,1,3)
+%         plot(t./time_factor, T_B), grid on,
+%         xlabel(time_label), ylabel('N-m'), axis([0 orbitPeriod./time_factor -0.002 0.002]),
+%         legend({'\tau_x', '\tau_y', '\tau_z'});
 
 
 

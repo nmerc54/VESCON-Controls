@@ -42,15 +42,7 @@ function [torque_decision] = selectCoilTorquey(parameters)
      counter = 1;
      
 %    *** GAINS ***  should add up to 1 for sim to work with Ke                      
-     if (eA >= 0.001)  % If the attiude error is high, correct
-        kA = 0.997;     % 0.995
-     elseif (eR >= 0.015)       % If attitude in good range, correct rate
-        kA = 0;
-     else
-         torque_decision = [0;0;0]; 
-         return
-     end
-     
+     kA = 0.9995;
      kR = 1-kA;
 %    *************
     
@@ -61,6 +53,8 @@ function [torque_decision] = selectCoilTorquey(parameters)
     % NOTE for parfor:
     %   There will be a ton of overhead here. You need to figure out how to
     %   parallelize the larger for loop. Otherwise it gets crazy.
+   
+    
     for i = 1:27
        % Calculate new quaternion from torque choice
        torque = torque_options(:, i).*T.*Ke;

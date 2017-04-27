@@ -43,8 +43,8 @@ t = 0 : dt : orbitPeriod;
 % Spacecraft Body-Axis Parameters
 mass = 10;              % kg
 x_dimension = 0.200;    % m
-y_dimension = 0.100;    % m
-z_dimension = 0.300;    % m
+y_dimension = 0.200;    % m
+z_dimension = 0.100;    % m
 
 % Inertia Tensor
 I_B = zeros(3, 3, numel(t));
@@ -56,7 +56,7 @@ mdot = 0.008;           % kg/s
 prop_mass_used = zeros(1, numel(t));
 
 % Torque Parameters
-thruster_torque_magnitude = 1e-4; % N-m
+thruster_torque_magnitude = 10e-3; % N-m
 torque_time               = 0.8;  % s
 magcoils_torque_magnetude = 1e-4; % N-m
 coils_freq                = 100;  % Hz
@@ -72,20 +72,20 @@ q_BtoI    = zeros(4, numel(t));
 qdot_BtoI = zeros(4, numel(t));
 
 % Initial Values:
-w_B(:, 1) = [0.01; 0.01; 0.01];    % rad/s
+w_B(:, 1) = [0.00; 0.00; 0.01];    % rad/s
 H_B(:, 1) = I_B(:,:,1) * w_B(:,1); 
-q_BtoI(:, 1) = normalize(0.5.*[0.95; -0.95; -1.05; -1.05]); % I to Body
+q_BtoI(:, 1) = normalize([0.26; 0.58; -0.2; -0.61]); % I to Body
 
 %% Simulation
 h = waitbar(0,'Initializing waitbar...');
 % --------------------------------------------------------------
-   q_D = 0.5.*[-1; 1; 1; 1];       % Q DESIRED
+   q_D = normalize([0.26; 0.58; -0.2; -0.61]);       % Q DESIRED
    w_D = [0 ; 0 ; 0 ];               % w DESIRED
    
    eA  = zeros(1, numel(t));         % eA -> error attitude
    eR  = zeros(1, numel(t));         % eR -> error rate
    
-   attitude_tolerance = 0.01;        % Tolerance
+   attitude_tolerance = 0.5;        % Tolerance
 
    % Calculate initial Errors and Gain
    Ke(1) = 1;                        % Keep constant for now
@@ -98,21 +98,34 @@ h = waitbar(0,'Initializing waitbar...');
    pulse_ctr = 0;           % Keep track of pulse time
    
    torque_choice = zeros(3, numel(t));
+   
+   attitude_bad_bool = 100*ones(1, numel(t));
+   attitude_bad_bool(1) = 0;
+   
 % --------------------------------------------------------------
 tic
 for i = 2:numel(t)
     
     % Use magnetorquers -- should implement Hz in here somehow...
-    %if eA <= attitude_tolerance 
-    if 1 == 1
+    if eA <= attitude_tolerance 
+    %if 1 == 1
+         
         % PARAMETERS: -----------------------------------------------------
         parameters = Parameters( ...
          q_BtoI(:, i-1), qdot_BtoI(:, i-1), q_D, H_B(:, i-1), I_B(:,:,i-1), ...
          magcoils_torque_magnetude, dt,  1  , eA(i-1), eR(i-1)              ...
          );   
-     
+ 
         % TORQUE SELECTION ------------------------------------------------
-        torque_choice(:, i) = selectCoilTorquey(parameters);
+        % Check for eA and eR
+        if (eA(i-1) <= 0.05) %&& (eR(i) <= 0.10)
+            attitude_bad_bool(i) = 0;
+            torque_choice(:, i) = [0;0;0];
+        else
+            attitude_bad_bool(i) = 1;
+            torque_choice(:, i) = selectCoilTorquey(parameters);
+        end
+        
         T_B(:, i) = magcoils_torque_magnetude.*torque_choice(:, i);
         
     % Use Thrusters
@@ -121,14 +134,21 @@ for i = 2:numel(t)
         % PARAMETERS: -----------------------------------------------------
         parameters = Parameters( ...
          q_BtoI(:, i-1), qdot_BtoI(:, i-1), q_D, H_B(:, i-1), I_B(:,:,i-1), ...
-         thruster_torque_magnitude, dt,  1  , eA(i-1), eR(i-1)              ...
+         thruster_torque_magnitude, torque_time,  1  , eA(i-1), eR(i-1)              ...
          );
 
 
         % TORQUE SELECTION ------------------------------------------------
         if mod(i, pulse) == 0  % System not in torque. Free to calculate torque to resolve motion
 
-            torque_choice(:, i) = selectThrusterTorqe(parameters);
+            % Check for eA and eR
+            if (eA(i-1) <= 0.10) && (eR(i) <= 0.10)
+                attitude_bad_bool(i) = 0;
+                torque_choice(:, i) = [0;0;0];
+            else
+                attitude_bad_bool(i) = 1;
+                torque_choice(:, i) = selectThrusterTorqe(parameters);
+            end
             T_B(:, i) = thruster_torque_magnitude.*torque_choice(:, i);
 
         else % System in a torque pulse. Torque is same as previous iteration

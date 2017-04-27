@@ -27,7 +27,7 @@ function [torque_decision] = selectThrusterTorqe(parameters)
     H       = parameters.H;       
     T       = parameters.T;   % Torque Magnitude
     I       = parameters.I;
-    q_des   = -parameters.q_des;
+    q_des   = parameters.q_des;
     dt      = parameters.dt;
     eA      = parameters.eA;
     eR      = parameters.eR;
@@ -37,20 +37,16 @@ function [torque_decision] = selectThrusterTorqe(parameters)
     torque_options = [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1;...
                       0,0,0,1,1,1,-1,-1,-1,0,0,0,1,1,1,-1,-1,-1,0,0,0,1,1,1,-1,-1,-1;...
                       0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1];
+                  
+%     torque_options = [0 ,0 ,0 ,1, 0, 0, -1;...
+%                       0 ,0 ,1 ,0, 0,-1, 0 ;...
+%                       0 ,1 ,0 ,0,-1, 0, 0 ];
     % ---------------------------------------------------------------------
 
      counter = 1;
      
 %    *** GAINS ***  should add up to 1 for sim to work with Ke                      
-     if (eA >= 0.001)  % If the attiude error is high, correct
-        kA = 0.997;     % 0.995
-     elseif (eR >= 0.015)       % If attitude in good range, correct rate
-        kA = 0;
-     else
-         torque_decision = [0;0;0]; 
-         return
-     end
-     
+     kA = 0.85;  
      kR = 1-kA;
 %    *************
     
