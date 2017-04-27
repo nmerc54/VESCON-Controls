@@ -67,12 +67,12 @@ w_B = zeros(3, numel(t));     % Body-Fixed rotation rates
 T_B = zeros(3, numel(t));     % Torque (body-fixed)
 B_I = zeros(3, numel(t));    
 B_B = zeros(3, numel(t));
-%Euler     = zeros(3, numel(t)); % Euler-Angles (inertial-fixed)
+Euler     = zeros(3, numel(t)); % Euler-Angles (inertial-fixed)
 q_BtoI    = zeros(4, numel(t));
 qdot_BtoI = zeros(4, numel(t));
 
 % Initial Values:
-w_B(:, 1) = [0.00; 0.00; 0.01];    % rad/s
+w_B(:, 1) = [0.1; 0.1; 0.45];    % rad/s
 H_B(:, 1) = I_B(:,:,1) * w_B(:,1); 
 q_BtoI(:, 1) = normalize([0.26; 0.58; -0.2; -0.61]); % I to Body
 
@@ -85,7 +85,7 @@ h = waitbar(0,'Initializing waitbar...');
    eA  = zeros(1, numel(t));         % eA -> error attitude
    eR  = zeros(1, numel(t));         % eR -> error rate
    
-   attitude_tolerance = 0.5;        % Tolerance
+   attitude_tolerance = 0.10;        % Tolerance
 
    % Calculate initial Errors and Gain
    Ke(1) = 1;                        % Keep constant for now
@@ -99,8 +99,8 @@ h = waitbar(0,'Initializing waitbar...');
    
    torque_choice = zeros(3, numel(t));
    
-   attitude_bad_bool = 100*ones(1, numel(t));
-   attitude_bad_bool(1) = 0;
+   mag_bool = 100*ones(1, numel(t));
+   mag_bool(1) = 0;
    
 % --------------------------------------------------------------
 tic
@@ -109,7 +109,7 @@ for i = 2:numel(t)
     % Use magnetorquers -- should implement Hz in here somehow...
     if eA <= attitude_tolerance 
     %if 1 == 1
-         
+        mag_bool(i) = 1;
         % PARAMETERS: -----------------------------------------------------
         parameters = Parameters( ...
          q_BtoI(:, i-1), qdot_BtoI(:, i-1), q_D, H_B(:, i-1), I_B(:,:,i-1), ...
@@ -118,11 +118,9 @@ for i = 2:numel(t)
  
         % TORQUE SELECTION ------------------------------------------------
         % Check for eA and eR
-        if (eA(i-1) <= 0.05) %&& (eR(i) <= 0.10)
-            attitude_bad_bool(i) = 0;
+        if 1 == 2 %(eA(i-1) <= 0.05) %&& (eR(i) <= 0.10)
             torque_choice(:, i) = [0;0;0];
         else
-            attitude_bad_bool(i) = 1;
             torque_choice(:, i) = selectCoilTorquey(parameters);
         end
         
@@ -130,7 +128,7 @@ for i = 2:numel(t)
         
     % Use Thrusters
     else
-        
+        mag_bool(i) = 0;
         % PARAMETERS: -----------------------------------------------------
         parameters = Parameters( ...
          q_BtoI(:, i-1), qdot_BtoI(:, i-1), q_D, H_B(:, i-1), I_B(:,:,i-1), ...
@@ -142,11 +140,11 @@ for i = 2:numel(t)
         if mod(i, pulse) == 0  % System not in torque. Free to calculate torque to resolve motion
 
             % Check for eA and eR
-            if (eA(i-1) <= 0.10) && (eR(i) <= 0.10)
-                attitude_bad_bool(i) = 0;
+            if 1 == 2 %(eA(i-1) <= 0.10) && (eR(i) <= 0.10)
+                mag_bool(i) = 0;
                 torque_choice(:, i) = [0;0;0];
             else
-                attitude_bad_bool(i) = 1;
+                mag_bool(i) = 1;
                 torque_choice(:, i) = selectThrusterTorqe(parameters);
             end
             T_B(:, i) = thruster_torque_magnitude.*torque_choice(:, i);
@@ -190,6 +188,11 @@ for i = 2:numel(t)
     end
 end
 toc
+
+for i = 1:numel(t)
+    Euler(:,i) = quat2Euler(q_BtoI(:, i))*r2d;
+end
+
 
 clear('h');
 %% Save workspace
