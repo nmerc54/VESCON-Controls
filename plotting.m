@@ -5,15 +5,15 @@ time_factor = 1;            % seconds per division
 time_label = 'Seconds';
 
 % Body Rates vs. Torque
-figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
-    subplot(2, 1, 1)
-        plot(t, w_B(1,:).*r2d, t, w_B(2,:).*r2d, t, w_B(3,:).*r2d), grid on,
-        legend({'\omega_{x}', '\omega_{y}', '\omega_{z}'}),
-        title('Body-Rates'), xlabel('Seconds'), ylabel('degrees/sec');
-    subplot(2,1,2)
-        plot(t, T_B(1,:), t, T_B(2,:), t, T_B(3,:)), grid on,
-        legend({'x', 'y', 'z'}), axis([0 orbitPeriod -0.002 0.002]),
-        title('Torques');
+% figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
+%     subplot(2, 1, 1)
+%         plot(t, w_B(1,:).*r2d, t, w_B(2,:).*r2d, t, w_B(3,:).*r2d), grid on,
+%         legend({'\omega_{x}', '\omega_{y}', '\omega_{z}'}),
+%         title('Body-Rates'), xlabel('Seconds'), ylabel('degrees/sec');
+%     subplot(2,1,2)
+%         plot(t, T_B(1,:), t, T_B(2,:), t, T_B(3,:)), grid on,
+%         legend({'x', 'y', 'z'}), axis([0 orbitPeriod -0.002 0.002]),
+%         title('Torques');
     
 %Euler Angles vs. Torque
 figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
@@ -37,19 +37,19 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
 %         xlabel(time_factor), ylabel('Degrees'), %axis([0 orbitPeriod -180 180]),
 %         title('Euler Axis Rotation');
 
-figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
-    subplot(3, 1, 1)
-        plot(t./time_factor, q_BtoI(1,:), t./time_factor, q_BtoI(2,:), t./time_factor, q_BtoI(3,:), t./time_factor, q_BtoI(4, :)), grid on,
-        legend({'q_1', 'q_2', 'q_3', 'q_4'}),
-        title('Quaternions'), xlabel(time_label);    
-    subplot(3, 1, 2)
-        plot(t./time_factor, qdot_BtoI(1,:), t./time_factor, qdot_BtoI(2,:), t./time_factor, qdot_BtoI(3,:), t./time_factor, qdot_BtoI(4, :)), grid on,
-        legend({'qd_1', 'qd_2', 'qd_3', 'qd_4'}),
-        title('Quaternion Rates'), xlabel(time_label); 
-    subplot(3, 1, 3)
-        plot(t./time_factor, T_B(1,:), t./time_factor, T_B(2,:), t./time_factor, T_B(3,:)), grid on,
-        legend({'x', 'y', 'z'}), axis([0 orbitPeriod./time_factor -0.002 0.002]),
-        xlabel(time_label), title('Torques');
+% figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
+%     subplot(3, 1, 1)
+%         plot(t./time_factor, q_BtoI(1,:), t./time_factor, q_BtoI(2,:), t./time_factor, q_BtoI(3,:), t./time_factor, q_BtoI(4, :)), grid on,
+%         legend({'q_1', 'q_2', 'q_3', 'q_4'}),
+%         title('Quaternions'), xlabel(time_label);    
+%     subplot(3, 1, 2)
+%         plot(t./time_factor, qdot_BtoI(1,:), t./time_factor, qdot_BtoI(2,:), t./time_factor, qdot_BtoI(3,:), t./time_factor, qdot_BtoI(4, :)), grid on,
+%         legend({'qd_1', 'qd_2', 'qd_3', 'qd_4'}),
+%         title('Quaternion Rates'), xlabel(time_label); 
+%     subplot(3, 1, 3)
+%         plot(t./time_factor, T_B(1,:), t./time_factor, T_B(2,:), t./time_factor, T_B(3,:)), grid on,
+%         legend({'x', 'y', 'z'}), axis([0 orbitPeriod./time_factor -0.002 0.002]),
+%         xlabel(time_label), title('Torques');
         
 % Body Rates
 % figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
@@ -134,22 +134,20 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
     
 
 
-% figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
-%     subplot(3,1,1)
-%         plot(t./time_factor, q_D*ones(1, numel(t))), grid on,
-%         legend({'q_D1', 'q_D2', 'q_D3', 'q_D4'}), axis([0 orbitPeriod./time_factor -1 1]),
-%         xlabel(time_label), ylabel('Quaternion Desired');
-%     subplot(3,1,2)
-%         plot(t./time_factor, eA), grid on,
-%         xlabel(time_label), ylabel('Attitude Error'),
-%     subplot(3,1,3)
-%         plot(t./time_factor, T_B), grid on,
-%         xlabel(time_label), ylabel('N-m'), axis([0 orbitPeriod./time_factor -0.002 0.002]),
-%         legend({'\tau_x', '\tau_y', '\tau_z'});
+figure()
+    for i = 1:12
+        subplot(12, 1, i)
+            plot(t./time_factor, thrusts(i, :)), grid on,
+            ylabel( sprintf('T%d', i) );
+    end
 
 
-
-
+figure()
+    for i = 1:3
+        subplot(3, 1, i)
+            plot(t./time_factor, coils_torque_direction(i, :)), grid on,
+            ylabel( sprintf('C%d', i) );
+    end
 
 
 

@@ -18,6 +18,12 @@
 %                            issue with eA settling at 2 (???) - now I need
 %                            to address so that the logic can switch to
 %                            megnetorquers.
+%
+% N.Mercadante  04-30-2017   First end-to-end working model. The system
+%                            uses magnetic coils and thrusters for control.
+%                            This program prints the quaternion and Euler
+%                            angle results - as well as provides the
+%                            actuator inputs.
 % ------------------------------------------------------------------------
 %
 % COPYRIGHT 2017 Space Systems Research Laboratory, all rights reserved.
@@ -100,6 +106,9 @@ h = waitbar(0,'Initializing waitbar...');
    
    torque_choice = zeros(3, numel(t));
    
+   thruster_torque_direction = zeros(3, numel(t));
+   coils_torque_direction = zeros(3, numel(t));
+   
    mag_bool = 100*ones(1, numel(t));
    mag_bool(1) = 0;
    
@@ -125,6 +134,7 @@ for i = 2:numel(t)
             torque_choice(:, i) = selectCoilTorque(parameters);
         end
         
+        coils_torque_direction(:, i) = torque_choice(:, i);
         T_B(:, i) = magcoils_torque_magnetude.*torque_choice(:, i);
         
     % Use Thrusters
@@ -145,12 +155,14 @@ for i = 2:numel(t)
                 torque_choice(:, i) = [0;0;0];
             else
                 torque_choice(:, i) = selectThrusterTorque(parameters);
+                thruster_torque_direction(:, i) = torque_choice(:, i);  
             end
             T_B(:, i) = Ke(i-1).*thruster_torque_magnitude.*torque_choice(:, i);
 
         else % System in a torque pulse. Torque is same as previous iteration
 
             torque_choice(:, i) = torque_choice(:, i-1);
+            thruster_torque_direction(:, i) = torque_choice(:, i); 
             T_B(:, i) = thruster_torque_magnitude.*torque_choice(:, i);
 
         end                
@@ -176,7 +188,7 @@ for i = 2:numel(t)
     Ke(i) = 1;
 
     % **** CHANGE SELECT_TORQUE to output thruster_choice
-    prop_mass_used(i) = iteratePropMass(prop_mass_used(i-1), mdot, dt, torque_choice(:, i));
+    prop_mass_used(i) = iteratePropMass(prop_mass_used(i-1), mdot, dt, thruster_torque_direction(:, i));
     I_B(:, :, i) = inertiaTensor(mass - 0*prop_mass_used(i), ...
                                 x_dimension, y_dimension, z_dimension);
            
@@ -188,6 +200,8 @@ for i = 2:numel(t)
     end
 end
 toc
+
+thrusts = get_thruster_fires(thruster_torque_direction);
 
 for i = 1:numel(t)
     Euler(:,i) = quat2Euler(q_BtoI(:, i))*r2d;

@@ -20,6 +20,8 @@
 %
 % COPYRIGHT 2017 Space Systems Research Laboratory, all rights reserved.
 %
+
+
 % *************************************************************************
 
 
@@ -34,9 +36,33 @@ function [prop_mass_out] = iteratePropMass(prop_mass, md, dt, thruster_choice)
     else
         % If any thruster fires, + or -, subtract mass flow * time from
         % prop mass. 
+             
+        
+        
+        
+        
+        
+        
         choice = sum(abs(thruster_choice));          
         prop_mass_out = prop_mass + md*dt*choice;
     
     end
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
