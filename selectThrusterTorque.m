@@ -21,7 +21,7 @@
 %
 % ************************************************************************
 
-function [torque_decision] = selectCoilTorquey(parameters)
+function [torque_decision] = selectThrusterTorque(parameters)
     
     q       = parameters.q;      
     H       = parameters.H;       
@@ -34,27 +34,23 @@ function [torque_decision] = selectCoilTorquey(parameters)
     Ke      = parameters.Ke;
    
     % All possible torque combinations. -----------------------------------
-    torque_options = [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1;...
-                      0,0,0,1,1,1,-1,-1,-1,0,0,0,1,1,1,-1,-1,-1,0,0,0,1,1,1,-1,-1,-1;...
-                      0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1];
+    torque_options = ...
+        [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1;...
+         0,0,0,1,1,1,-1,-1,-1,0,0,0,1,1,1,-1,-1,-1,0,0,0,1,1,1,-1,-1,-1;...
+         0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1,0,1,-1];
     % ---------------------------------------------------------------------
 
      counter = 1;
      
 %    *** GAINS ***  should add up to 1 for sim to work with Ke                      
-     kA = 0.9995;
+     kA = 0.75;  % Try 0.80
      kR = 1-kA;
 %    *************
     
     % Initialize Estimated Errors
     error_attitude_est = eA;
     error_rate_est = eR;
-     
-    % NOTE for parfor:
-    %   There will be a ton of overhead here. You need to figure out how to
-    %   parallelize the larger for loop. Otherwise it gets crazy.
-   
-    
+
     for i = 1:27
        % Calculate new quaternion from torque choice
        torque = torque_options(:, i).*T.*Ke;

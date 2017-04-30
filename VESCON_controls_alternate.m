@@ -1,5 +1,5 @@
 %% *********************************************************************** 
-%  VESCON ADC Controls
+%  VESCON ADC Controls Alternate
 %  Space Systems Research Laboaratory
 %  --------------------------------
 %  Nicholas Mercadante
@@ -36,7 +36,7 @@ r2d = 180/pi;
 %% Parameters
 
 % Orbit Period
-orbitPeriod = 60*10*10;    % sec
+orbitPeriod = 60*10;    % sec
 dt = 0.01;              % sec --> Make sure that this works with coils_freq
 t = 0 : dt : orbitPeriod;
 
@@ -56,7 +56,7 @@ mdot = 0.008;           % kg/s
 prop_mass_used = zeros(1, numel(t));
 
 % Torque Parameters
-thruster_torque_magnitude = 10e-3; % N-m
+thruster_torque_magnitude = 1e-3; % N-m
 torque_time               = 0.8;  % s
 magcoils_torque_magnetude = 1e-4; % N-m
 coils_freq                = 100;  % Hz
@@ -108,7 +108,7 @@ for i = 2:numel(t)
     
     % Use magnetorquers -- should implement Hz in here somehow...
     %if eA <= attitude_tolerance 
-    if 1 == 1
+    if 1 == 2
         mag_bool(i) = 1;
         % PARAMETERS: -----------------------------------------------------
         parameters = Parameters( ...
@@ -125,7 +125,7 @@ for i = 2:numel(t)
         end
         
 
-        T_B(:, i) = torque_choice(:, i);
+        T_B(:, i) = magcoils_torque_magnetude .* torque_choice(:, i);
         
     % Use Thrusters
     else
@@ -141,12 +141,12 @@ for i = 2:numel(t)
         if mod(i, pulse) == 0  % System not in torque. Free to calculate torque to resolve motion
 
             % Check for eA and eR
-            if 1 == 2 %(eA(i-1) <= 0.10) && (eR(i) <= 0.10)
+            if (eA(i-1) <= 0.10) && (eR(i) <= 0.10)
                 mag_bool(i) = 0;
                 torque_choice(:, i) = [0;0;0];
             else
                 mag_bool(i) = 1;
-                torque_choice(:, i) = selectThrusterTorqe(parameters);
+                torque_choice(:, i) = selectTorqueQ(parameters);
             end
             T_B(:, i) = thruster_torque_magnitude.*torque_choice(:, i);
 
