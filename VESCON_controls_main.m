@@ -36,7 +36,7 @@ r2d = 180/pi;
 %% Parameters
 
 % Orbit Period
-orbitPeriod = 60*10;    % sec
+orbitPeriod = 60*2;    % sec
 dt = 0.01;              % sec --> Make sure that this works with coils_freq
 t = 0 : dt : orbitPeriod;
 
@@ -108,8 +108,8 @@ tic
 for i = 2:numel(t)
     
     % Use magnetorquers -- should implement Hz in here somehow...
-    %if eA <= attitude_tolerance 
-    if 1 == 2
+    if ((eA(i-1) <= 0.10) || (eA(i-1) >= 2-0.10)) && (eR(i-1) <= 0.10)
+    %if 1 == 2
         mag_bool(i) = 1;
         % PARAMETERS: -----------------------------------------------------
         parameters = Parameters( ...
@@ -119,7 +119,7 @@ for i = 2:numel(t)
  
         % TORQUE SELECTION ------------------------------------------------
         % Check for eA and eR
-        if 1 == 2 %(eA(i-1) <= 0.05) %&& (eR(i) <= 0.10)
+        if (eA(i-1) <= 0.05) && (eR(i-1) <= 0.10)
             torque_choice(:, i) = [0;0;0];
         else
             torque_choice(:, i) = selectCoilTorque(parameters);
@@ -141,11 +141,9 @@ for i = 2:numel(t)
         if mod(i, pulse) == 0  % System not in torque. Free to calculate torque to resolve motion
 
             % Check for eA and eR
-            if (eA(i-1) <= 0.10) && (eR(i) <= 0.10)
-                mag_bool(i) = 0;
+            if ((eA(i-1) <= 0.10) || (eA(i-1) >= 2-0.10)) && (eR(i-1) <= 0.10)
                 torque_choice(:, i) = [0;0;0];
             else
-                mag_bool(i) = 1;
                 torque_choice(:, i) = selectThrusterTorque(parameters);
             end
             T_B(:, i) = Ke(i-1).*thruster_torque_magnitude.*torque_choice(:, i);

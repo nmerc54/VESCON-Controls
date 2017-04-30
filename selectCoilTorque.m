@@ -43,7 +43,7 @@ function [torque_decision] = selectCoilTorque(parameters)
      counter = 1;
      
 %    *** GAINS ***  should add up to 1 for sim to work with Ke                      
-     kA = 0.9995;
+     kA = 0.70;
      kR = 1-kA;
 %    *************
     

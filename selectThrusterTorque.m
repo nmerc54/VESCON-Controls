@@ -43,7 +43,7 @@ function [torque_decision] = selectThrusterTorque(parameters)
      counter = 1;
      
 %    *** GAINS ***  should add up to 1 for sim to work with Ke                      
-     kA = 0.75;  % Try 0.80
+     kA = 0.70;  % Try 0.80, 0.75
      kR = 1-kA;
 %    *************
     
