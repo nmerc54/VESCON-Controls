@@ -56,7 +56,7 @@ mdot = 0.008;           % kg/s
 prop_mass_used = zeros(1, numel(t));
 
 % Torque Parameters
-thruster_torque_magnitude = 5e-3; % N-m
+thruster_torque_magnitude = 8e-3; % N-m
 torque_time               = 0.8;  % s
 magcoils_torque_magnetude = 1e-4; % N-m
 coils_freq                = 100;  % Hz
@@ -173,7 +173,7 @@ for i = 2:numel(t)
     % Calculate Errors:
     eA(i) = getError( q_BtoI(:, i)   , q_D);
     eR(i) = getError( w_B(:, i)      , w_D);
-    Ke(i) = eA(i)/2;
+    Ke(i) = 1;
 
     % **** CHANGE SELECT_TORQUE to output thruster_choice
     prop_mass_used(i) = iteratePropMass(prop_mass_used(i-1), mdot, dt, torque_choice(:, i));

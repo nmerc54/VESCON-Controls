@@ -1,7 +1,8 @@
 %% Plotting.m
 %  Display Results
-time_factor = 60;
-time_label = 'Minutes';
+time_factor = 1;            % seconds per division
+                            % i.e. 1 for sec, 60 for minute, 3600 for hour
+time_label = 'Seconds';
 
 % Body Rates vs. Torque
 figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
@@ -15,15 +16,15 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
         title('Torques');
     
 %Euler Angles vs. Torque
-% figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
-%     subplot(2,1,1)
-%         plot(t./time_factor, Euler(1,:).*r2d, t./time_factor, Euler(2,:).*r2d, t./time_factor, Euler(3,:).*r2d), grid on,
-%         legend({'\Phi (Roll)', '\Theta (Pitch)', '\Psi (Yaw)'}),
-%         title('Euler Angels'), xlabel(time_label), ylabel('degrees');    
-%     subplot(2,1,2)
-%         plot(t./time_factor, T_B(1,:), t./time_factor, T_B(2,:), t./time_factor, T_B(3,:)), grid on,
-%         legend({'x', 'y', 'z'}), %axis([0 orbitPeriod -0.01 0.01]),
-%         title('Torques');
+figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
+    subplot(2,1,1)
+        plot(t./time_factor, Euler(1,:).*r2d, t./time_factor, Euler(2,:).*r2d, t./time_factor, Euler(3,:).*r2d), grid on,
+        legend({'\Phi (Roll)', '\Theta (Pitch)', '\Psi (Yaw)'}),
+        title('Euler Angels'), xlabel(time_label), ylabel('degrees');    
+    subplot(2,1,2)
+        plot(t./time_factor, T_B(1,:), t./time_factor, T_B(2,:), t./time_factor, T_B(3,:)), grid on,
+        legend({'x', 'y', 'z'}), %axis([0 orbitPeriod -0.01 0.01]),
+        title('Torques');
 
 % Quaternion Components        
 % figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
@@ -128,7 +129,7 @@ figure('position',[screen_size(3)/4, screen_size(4)/4, 1000, 500])
         plot(t./time_factor, eR), grid on,
         xlabel(time_label), ylabel('Rate Error');
     subplot(3, 1, 3)
-        plot(t, mag_bool), axis([0 orbitPeriod./time_factor -1 2]), grid on;
+        plot(t./time_factor, mag_bool), axis([0 orbitPeriod./time_factor -1 2]), grid on;
         xlabel(time_label), ylabel('Coil or Thruster');
     
 
