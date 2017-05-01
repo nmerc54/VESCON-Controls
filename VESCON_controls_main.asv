@@ -42,7 +42,7 @@ r2d = 180/pi;
 %% Parameters
 
 % Orbit Period
-orbitPeriod = 60*90*10;    % sec
+orbitPeriod = 60*3;    % sec
 dt = 0.01;              % sec --> Make sure that this works with coils_freq
 t = 0 : dt : orbitPeriod;
 
@@ -64,7 +64,7 @@ prop_mass_used = zeros(1, numel(t));
 % Torque Parameters
 thruster_torque_magnitude = 10e-3; % N-m
 torque_time               = 0.8;  % s
-magcoils_torque_magnetude = 25e-4; % N-m
+magcoils_torque_magnetude = 8e-4; % N-m
 coils_freq                = 100;  % Hz
 
 % Matrix initialization:
@@ -93,7 +93,7 @@ h = waitbar(0,'Initializing waitbar...');
    Ke  = ones(1, numel(t));          % Ke -> torque scaling factor
    
    attitude_tolerance = 0.05;        % Tolerance
-   rate_tolerance     = 0.10;
+   rate_tolerance     = 0.25;
 
    % Calculate initial Errors and Gain
    Ke(1) = 1;                        % Keep constant for now
@@ -128,9 +128,13 @@ for i = 2:numel(t)
          );   
  
         % TORQUE SELECTION ------------------------------------------------
+        % Check for eA and eR
+        if (eA(i-1) <= 0.05) && (eR(i-1) <= 0.10)
+            torque_choice(:, i) = [0;0;0];
+        else
+            torque_choice(:, i) = selectCoilTorque(parameters);
+        end
         
-        torque_choice(:, i) = selectCoilTorque(parameters);
-  
         coils_torque_direction(:, i) = torque_choice(:, i);
         T_B(:, i) = magcoils_torque_magnetude.*torque_choice(:, i);
         
@@ -147,9 +151,13 @@ for i = 2:numel(t)
         % TORQUE SELECTION ------------------------------------------------
         if mod(i, pulse) == 0  % System not in torque. Free to calculate torque to resolve motion
 
-            torque_choice(:, i) = selectThrusterTorque(parameters);
-            thruster_torque_direction(:, i) = torque_choice(:, i);  
-            
+            % Check for eA and eR
+            if ((eA(i-1) <= 0.10) || (eA(i-1) >= 2-0.10)) && (eR(i-1) <= 0.10)
+                torque_choice(:, i) = [0;0;0];
+            else
+                torque_choice(:, i) = selectThrusterTorque(parameters);
+                thruster_torque_direction(:, i) = torque_choice(:, i);  
+            end
             T_B(:, i) = Ke(i-1).*thruster_torque_magnitude.*torque_choice(:, i);
 
         else % System in a torque pulse. Torque is same as previous iteration
