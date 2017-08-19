@@ -1,9 +1,3 @@
-This is the ADC sim for Rascal-1. 
+This is the ADC Simulation for VESCON -  a small satellite designed as a part of the Saint Louis University senior capstone. All of the ADC simulation work was completed by Nicholas Mercadante.
 
-
-%% NOTES on MAG_SIM2 and VESCON_controls
-%  -------------------------------------
-% Run with 0.01 N-m for best results. Use eA >= 0.05 and eR >= 0.015.
-%
-% For more true numbers with magnetorqers, use small torque and play with
-% the numbers.
+Please run "VESCON_controls_main.m" for the controls model. The functions "selectCoilTorque" and "selectThrusterTorque" are the functions that choose which magnetorquer (mag-coils) or thruster combinations should be used to resolve the attitude of the spacecraft.

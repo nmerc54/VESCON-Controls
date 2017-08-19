@@ -42,7 +42,7 @@ r2d = 180/pi;
 %% Parameters
 
 % Orbit Period
-orbitPeriod = 60*90*10;    % sec
+orbitPeriod = 60*2;    % sec
 dt = 0.01;              % sec --> Make sure that this works with coils_freq
 t = 0 : dt : orbitPeriod;
 
