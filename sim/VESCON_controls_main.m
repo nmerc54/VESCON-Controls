@@ -43,7 +43,7 @@ r2d = 180/pi;
 
 % Orbit Period
 orbitPeriod = 60*2;    % sec
-dt = 0.01;              % sec --> Make sure that this works with coils_freq
+dt = 0.01;             % sec --> Make sure that this works with coils_freq
 t = 0 : dt : orbitPeriod;
 
 % Spacecraft Body-Axis Parameters
