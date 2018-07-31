@@ -29,8 +29,8 @@
 % COPYRIGHT 2017 Space Systems Research Laboratory, all rights reserved.
 %
 % ************************************************************************
+startup;
 
-clear; clc; close all;
 set(0,'units','pixels');
 screen_size = get(0,'screensize');
 
@@ -203,19 +203,19 @@ end
 
 clear('h');
 %% Save workspace
-%     format shortg;
-%     c = clock;
-%     fix(c);
-% 
-%     year =  c(1);
-%     month = c(2);
-%     day =   c(3);
-%     hh =    c(4);
-%     mm =    c(5);
-% 
-%     filename = sprintf('rascalmagnetics_workspace_%d-%d-%d_%d-%d', month, day, year, hh, mm);
-% 
-%     save(filename);
+    format shortg;
+    c = clock;
+    fix(c);
+
+    year =  c(1);
+    month = c(2);
+    day =   c(3);
+    hh =    c(4);
+    mm =    c(5);
+
+    filename = sprintf('VESCON_Dynamics_%d-%d-%d_%d-%d', month, day, year, hh, mm);
+
+    save([LOGPATH '\' filename]);
 
 %% Plot
 % comment out if running on hopper or apex
